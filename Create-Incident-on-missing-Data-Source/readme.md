@@ -1,17 +1,23 @@
-# Create-Incident-on-missing-Data-Source
-author: John Joyner
+### Create-Incident-on-missing-Data-Source
+Author: John Joyner
+Consumption plan Logic App has one (1) trigger and fourteen (14) steps
 
 # Create Microsoft Sentinel Incident on Missing Data Source Solution
-This solution will create a Microsoft Sentinel incident when one or more data sources are discovered to have sent no data in the previous 24 hours. The Logic App loops through each data source (specified in the first 'Initialize variable' task in the Logic App) and checks for that data type in the Log Analytics workspace, appending missing data source name(s) to an array. If any data source is found to have no recent data in the workspace, a low severity Microsoft Sentinel incident is created that includes an HTML table of the array listing the missing data source name(s).
+This solution will create a Microsoft Sentinel incident when one or more data sources are discovered to have sent no data in the previous 24 hours.
 
 The Logic App is designed to be run on a once per day recurrence, but you can modify the frequency as desired.
 
-The "Initialize variable - Sentinel Data Sourced" step of the Logic App must be customized with the data sources expected in the environment (details provided below in this README).
+### IMPORTANT POST DEPLOYMENT STEPS
+
+1. The "Initialize variable - Sentinel Data Sources" step of the Logic App must be customized with the data sources expected in the environment (details provided below in this README).
+
+2. The Logic App creates and uses a Managed System Identity (MSI) to authenticate with Azure Log Analytics and Microsoft Sentinel. Assign RBAC 'Log Analytics Reader' and 'Microsoft Sentinel Contributor' roles to the Logic App at the Management Group, Subscription, Resource Group, or Log Analytics Workspace level.
 
 ### Overview of the steps the Logic App works through 
 
-![0-appoverview](../Create-Incident-on-missing-Data-Source/images/0-appoverview.png)
+The Logic App loops through each data source (specified in the first 'Initialize variable' task in the Logic App) and checks for that data type in the Log Analytics workspace, appending missing data source name(s) to an array. If any data source is found to have no recent data in the workspace, a low severity Microsoft Sentinel incident is created that includes an HTML table of the array listing the missing data source name(s).
 
+![0-appoverview](../Create-Incident-on-missing-Data-Source/images/0-appoverview.png)
 
 ### The Logic App is activated by a Recurrence trigger whose frequency of execution can be adjusted to your requirements:
 
