@@ -47,7 +47,7 @@ Each data source is specified as an array with two "attribute : value" pairs lik
 ```
 To add additional data sources, the "kql" value is what you would use in the Log Analytics log viewer to query for that data source, also known as the Table name, possibly augmented with one or more "| where" filters. The "name" value is any text string that is meaningful to you to describe that data source.
 
-If any KQL or Name value contains quote marks ("), these must be escaped with a backslash {\}, so that you actually have backslash-quote (\") specified in the Logic App. See this example where the KQL contains a "| where" filter with quote marks:
+If any KQL or Name value contains quote marks ("), these must be escaped with a backslash {\\}, so that you actually have backslash-quote (\\") specified in the Logic App. See this example where the KQL contains a "| where" filter with quote marks:
 
 ```
    {
