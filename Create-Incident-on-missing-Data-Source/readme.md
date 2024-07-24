@@ -1,5 +1,6 @@
 ### Create-Incident-on-missing-Data-Source
 Author: John Joyner
+
 Consumption plan Logic App has one (1) trigger and fourteen (14) steps
 
 # Create Microsoft Sentinel Incident on Missing Data Source Solution
