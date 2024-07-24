@@ -5,8 +5,6 @@ Consumption plan Logic App has one (1) trigger and fourteen (14) steps
 
 This solution will create a Microsoft Sentinel incident when one or more data sources are discovered to have sent no data in the previous 24 hours.
 
-The Logic App is designed to be run on a once per day recurrence, but you can modify the frequency as desired.
-
 ### Click to Deploy to Azure
 
 <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FAzure%2FAzure-Sentinel%2Fmaster%2FPlaybooks%2FCreate-Incident-on-missing-Data-Source%2Fazuredeploy.json" target="_blank">
