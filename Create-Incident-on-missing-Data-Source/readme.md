@@ -13,9 +13,9 @@ This solution will create a Microsoft Sentinel incident when one or more data so
 
 ### IMPORTANT POST DEPLOYMENT STEPS
 
-1. The "Initialize variable - Sentinel Data Sources" step of the Logic App must be customized with the data sources expected in the environment (details provided below in this README).
+1. The "<b>Initialize variable - Sentinel Data Sources</b>" step of the Logic App must be customized with the data sources expected in the environment (details provided below in this README).
 
-2. The Logic App creates and uses a Managed System Identity (MSI) to authenticate with Azure Log Analytics and Microsoft Sentinel. Assign RBAC 'Log Analytics Reader' and 'Microsoft Sentinel Contributor' roles to the Logic App at the Management Group, Subscription, Resource Group, or Log Analytics Workspace level.
+2. The Logic App creates and uses a Managed System Identity (MSI) to authenticate with Azure Log Analytics and Microsoft Sentinel. Assign RBAC '<b>Log Analytics Reader</b>' and '<b>Microsoft Sentinel Contributor</b>' roles to the Logic App at the Management Group, Subscription, Resource Group, or Log Analytics Workspace level.
 
 ### Overview of the steps the Logic App works through 
 
