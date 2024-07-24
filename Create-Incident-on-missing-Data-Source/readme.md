@@ -8,6 +8,12 @@ This solution will create a Microsoft Sentinel incident when one or more data so
 
 The Logic App is designed to be run on a once per day recurrence, but you can modify the frequency as desired.
 
+### Click to Deploy to Azure
+
+<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FAzure%2FAzure-Sentinel%2Fmaster%2FPlaybooks%2FCreate-Incident-on-missing-Data-Source%2Fazuredeploy.json" target="_blank">
+    <img src="https://aka.ms/deploytoazurebutton"/>
+</a>
+
 ### IMPORTANT POST DEPLOYMENT STEPS
 
 1. The "Initialize variable - Sentinel Data Sources" step of the Logic App must be customized with the data sources expected in the environment (details provided below in this README).
@@ -59,7 +65,5 @@ Remember that each array needs a comma after the closing curly bracket, except f
 
    ![7-SampleIncident](../Create-Incident-on-missing-Data-Source/images/7-SampleIncident.png)
 
-<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FAzure%2FAzure-Sentinel%2Fmaster%2FPlaybooks%2FCreate-Incident-on-missing-Data-Source%2Fazuredeploy.json" target="_blank">
-    <img src="https://aka.ms/deploytoazurebutton"/>
-</a>
+
 
