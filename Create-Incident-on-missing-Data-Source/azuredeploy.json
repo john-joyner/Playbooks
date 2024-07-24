@@ -1,0 +1,422 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "workflows_Check_for_stopped_Sentinel_data_sources_name": {
+            "defaultValue": "Check-for-stopped-Sentinel-data-sources",
+            "type": "String"
+        },
+        "connections_azuremonitorlogs_3_externalid": {
+            "defaultValue": "/subscriptions/318b3c21-43a9-4b05-8ed3-cd184009466e/resourceGroups/CPL-RG-DEV-EUS/providers/Microsoft.Web/connections/azuremonitorlogs-3",
+            "type": "String"
+        },
+        "userAssignedIdentities_journey3_PolicyAssignmentMI_externalid": {
+            "defaultValue": "/subscriptions/318b3c21-43a9-4b05-8ed3-cd184009466e/resourceGroups/CPL-RG-DEV-EUS/providers/Microsoft.ManagedIdentity/userAssignedIdentities/journey3-PolicyAssignmentMI",
+            "type": "String"
+        },
+        "connections_azuresentinel_4_externalid": {
+            "defaultValue": "/subscriptions/318b3c21-43a9-4b05-8ed3-cd184009466e/resourceGroups/CPL-RG-DEV-EUS/providers/Microsoft.Web/connections/azuresentinel-4",
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Logic/workflows",
+            "apiVersion": "2017-07-01",
+            "name": "[parameters('workflows_Check_for_stopped_Sentinel_data_sources_name')]",
+            "location": "eastus",
+            "identity": {
+                "type": "UserAssigned",
+                "userAssignedIdentities": {
+                    "/subscriptions/318b3c21-43a9-4b05-8ed3-cd184009466e/resourceGroups/CPL-RG-DEV-EUS/providers/Microsoft.ManagedIdentity/userAssignedIdentities/journey3-PolicyAssignmentMI": {}
+                }
+            },
+            "properties": {
+                "state": "Enabled",
+                "definition": {
+                    "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {
+                        "$connections": {
+                            "defaultValue": {},
+                            "type": "Object"
+                        },
+                        "Resource Group": {
+                            "defaultValue": "cpl-rg-dev-eus",
+                            "type": "String"
+                        },
+                        "Subscription": {
+                            "defaultValue": "318b3c21-43a9-4b05-8ed3-cd184009466e",
+                            "type": "String"
+                        },
+                        "Workspace": {
+                            "defaultValue": "Journey3",
+                            "type": "String"
+                        }
+                    },
+                    "triggers": {
+                        "Recurrence_-_Run_Daily": {
+                            "recurrence": {
+                                "frequency": "Day",
+                                "interval": 1
+                            },
+                            "evaluatedRecurrence": {
+                                "frequency": "Day",
+                                "interval": 1
+                            },
+                            "type": "Recurrence"
+                        }
+                    },
+                    "actions": {
+                        "Condition_-_Were_any_stopped_Data_Sources_found": {
+                            "actions": {
+                                "Create_HTML_table_-_Formatted_list_of_stopped_Data_Sources": {
+                                    "runAfter": {},
+                                    "type": "Table",
+                                    "inputs": {
+                                        "format": "HTML",
+                                        "from": "@variables('stopped-data-sources')"
+                                    }
+                                },
+                                "Create_incident_-_One_or_more_Data_Sources_stopped_sending_data": {
+                                    "runAfter": {
+                                        "Create_HTML_table_-_Formatted_list_of_stopped_Data_Sources": [
+                                            "Succeeded"
+                                        ]
+                                    },
+                                    "type": "ApiConnection",
+                                    "inputs": {
+                                        "body": {
+                                            "description": "[concat('List of stopped data source(s):\n@{body(''Create_HTML_table_-_Formatted_list_of_stopped_Data_Sources'')}\nThe listed data source(s) stopped sending data in the last 24 hours, although some connected data sources may just not have had any data to send in this 24 hour window. If appropriate, investigate and work to restore data connection. If a data connector is no longer active, modify the \"Initialize variable - Sentinel Data Sources\" task in the \"', parameters('workflows_Check_for_stopped_Sentinel_data_sources_name'), '\" playbook (Logic app) to remove the inactive data source.\n')]",
+                                            "severity": "Low",
+                                            "status": "New",
+                                            "title": "One or more Microsoft Sentinel data sources stopped sending data"
+                                        },
+                                        "host": {
+                                            "connection": {
+                                                "name": "@parameters('$connections')['azuresentinel_1']['connectionId']"
+                                            }
+                                        },
+                                        "method": "put",
+                                        "path": "/Incidents/subscriptions/@{encodeURIComponent(parameters('Subscription'))}/resourceGroups/@{encodeURIComponent(parameters('Resource Group'))}/workspaces/@{encodeURIComponent(parameters('Workspace'))}"
+                                    }
+                                }
+                            },
+                            "runAfter": {
+                                "For_each_-_Loop_through_each_Data_Source": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "expression": {
+                                "and": [
+                                    {
+                                        "not": {
+                                            "equals": [
+                                                "@length(variables('stopped-data-sources'))",
+                                                0
+                                            ]
+                                        }
+                                    }
+                                ]
+                            },
+                            "type": "If"
+                        },
+                        "For_each_-_Loop_through_each_Data_Source": {
+                            "foreach": "@body('Parse_JSON_-_Sentinel_Data_Sources')?['body']",
+                            "actions": {
+                                "Condition_-_Is_the_Data_Source_stopped": {
+                                    "actions": {
+                                        "Append_to_array_variable": {
+                                            "runAfter": {},
+                                            "type": "AppendToArrayVariable",
+                                            "inputs": {
+                                                "name": "stopped-data-sources",
+                                                "value": {
+                                                    "Data Source": "@{items('For_each_-_Loop_through_each_Data_Source')?['name']}"
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "runAfter": {
+                                        "Run_query_and_list_results_V2_(Preview)_-_Check_Data_Source_for_last_day": [
+                                            "Succeeded"
+                                        ]
+                                    },
+                                    "expression": {
+                                        "and": [
+                                            {
+                                                "equals": [
+                                                    "@length(body('Run_query_and_list_results_V2_(Preview)_-_Check_Data_Source_for_last_day')?['value'])",
+                                                    0
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "type": "If"
+                                },
+                                "Run_query_and_list_results_V2_(Preview)_-_Check_Data_Source_for_last_day": {
+                                    "runAfter": {
+                                        "Set_variable_-_Data_Source_KQL": [
+                                            "Succeeded"
+                                        ]
+                                    },
+                                    "type": "ApiConnection",
+                                    "inputs": {
+                                        "body": {
+                                            "query": "@{items('For_each_-_Loop_through_each_Data_Source')?['kql']} | where TimeGenerated >= ago(1d) | summarize Time = max(TimeGenerated) | where isnotempty(Time)",
+                                            "timerangetype": "Last 1 day"
+                                        },
+                                        "host": {
+                                            "connection": {
+                                                "name": "@parameters('$connections')['azuremonitorlogs']['connectionId']"
+                                            }
+                                        },
+                                        "method": "post",
+                                        "path": "/queryDataV2",
+                                        "queries": {
+                                            "resourcegroups": "@parameters('Resource Group')",
+                                            "resourcename": "@parameters('Workspace')",
+                                            "resourcetype": "Log Analytics Workspace",
+                                            "subscriptions": "@parameters('Subscription')"
+                                        }
+                                    }
+                                },
+                                "Set_variable_-_Data_Source_KQL": {
+                                    "runAfter": {
+                                        "Set_variable_-_Data_Source_name": [
+                                            "Succeeded"
+                                        ]
+                                    },
+                                    "type": "SetVariable",
+                                    "inputs": {
+                                        "name": "kql",
+                                        "value": "@items('For_each_-_Loop_through_each_Data_Source')?['kql']"
+                                    }
+                                },
+                                "Set_variable_-_Data_Source_name": {
+                                    "runAfter": {},
+                                    "type": "SetVariable",
+                                    "inputs": {
+                                        "name": "name",
+                                        "value": "@items('For_each_-_Loop_through_each_Data_Source')?['name']"
+                                    }
+                                }
+                            },
+                            "runAfter": {
+                                "Parse_JSON_-_Sentinel_Data_Sources": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "Foreach",
+                            "runtimeConfiguration": {
+                                "concurrency": {
+                                    "repetitions": 1
+                                }
+                            }
+                        },
+                        "Initialize_variable_-_Data_Source_KQL": {
+                            "runAfter": {
+                                "Initialize_variable_-_Data_Source_name": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "InitializeVariable",
+                            "inputs": {
+                                "variables": [
+                                    {
+                                        "name": "kql",
+                                        "type": "string"
+                                    }
+                                ]
+                            }
+                        },
+                        "Initialize_variable_-_Data_Source_name": {
+                            "runAfter": {
+                                "Initialize_variable_-_Sentinel_Data_Sources": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "InitializeVariable",
+                            "inputs": {
+                                "variables": [
+                                    {
+                                        "name": "name",
+                                        "type": "string"
+                                    }
+                                ]
+                            }
+                        },
+                        "Initialize_variable_-_Sentinel_Data_Sources": {
+                            "runAfter": {},
+                            "type": "InitializeVariable",
+                            "inputs": {
+                                "variables": [
+                                    {
+                                        "name": "Sentinel-data-sources",
+                                        "type": "object",
+                                        "value": {
+                                            "body": [
+                                                {
+                                                    "kql": "AWSCloudTrail",
+                                                    "name": "Amazon Web Services"
+                                                },
+                                                {
+                                                    "kql": "AzureActivity",
+                                                    "name": "Azure Activity"
+                                                },
+                                                {
+                                                    "kql": "AzureDiagnostics | where ResourceProvider ==  \"MICROSOFT.KEYVAULT\"",
+                                                    "name": "Azure Key Vault"
+                                                },
+                                                {
+                                                    "kql": "StorageBlobLogs",
+                                                    "name": "Azure Storage Account"
+                                                },
+                                                {
+                                                    "kql": "ConfigurationData",
+                                                    "name": "Change Tracking and Inventory"
+                                                },
+                                                {
+                                                    "kql": "CommonSecurityLog | where DeviceVendor == \"Fortinet\" | where DeviceProduct startswith \"Fortigate\"",
+                                                    "name": "Fortinet"
+                                                },
+                                                {
+                                                    "kql": "W3CIISLog",
+                                                    "name": "IIS Logs"
+                                                },
+                                                {
+                                                    "kql": "OfficeActivity",
+                                                    "name": "Microsoft 365 (formerly, Office 365)"
+                                                },
+                                                {
+                                                    "kql": "DeviceEvents | union isfuzzy=true DeviceFileEvents | union isfuzzy=true DeviceImageLoadEvents | union isfuzzy=true DeviceInfo | union isfuzzy=true DeviceLogonEvents | union isfuzzy=true DeviceNetworkEvents | union isfuzzy=true DeviceNetworkInfo | union isfuzzy=true DeviceProcessEvents | union isfuzzy=true DeviceRegistryEvents | union isfuzzy=true DeviceFileCertificateInfo",
+                                                    "name": "Microsoft Defender XDR"
+                                                },
+                                                {
+                                                    "kql": "SigninLogs",
+                                                    "name": "Microsoft Entra ID"
+                                                },
+                                                {
+                                                    "kql": "Syslog",
+                                                    "name": "Syslog via AMA"
+                                                },
+                                                {
+                                                    "kql": "SqlAssessment_CL",
+                                                    "name": "SQL Assessment"
+                                                },
+                                                {
+                                                    "kql": "SqlVulnerabilityAssessmentScanStatus",
+                                                    "name": "SQL Vulnerability Assessment Scan"
+                                                },
+                                                {
+                                                    "kql": "VMConnection",
+                                                    "name": "VM Insights"
+                                                },
+                                                {
+                                                    "kql": "ASimDnsActivityLogs | where EventProduct == \"DNS Server\" | where EventVendor == \"Microsoft\"",
+                                                    "name": "Windows DNS Events via AMA"
+                                                },
+                                                {
+                                                    "kql": "Event",
+                                                    "name": "Windows Event Logs"
+                                                },
+                                                {
+                                                    "kql": "ASimNetworkSessionLogs | where EventProduct == \"Windows Firewall\"",
+                                                    "name": "Windows Firewall Events via AMA"
+                                                },
+                                                {
+                                                    "kql": "SecurityEvent",
+                                                    "name": "Windows Security Events via AMA"
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        "Initialize_variable_-_Stopped_Data_Sources": {
+                            "runAfter": {
+                                "Initialize_variable_-_Data_Source_KQL": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "InitializeVariable",
+                            "inputs": {
+                                "variables": [
+                                    {
+                                        "name": "stopped-data-sources",
+                                        "type": "array"
+                                    }
+                                ]
+                            }
+                        },
+                        "Parse_JSON_-_Sentinel_Data_Sources": {
+                            "runAfter": {
+                                "Initialize_variable_-_Stopped_Data_Sources": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "ParseJson",
+                            "inputs": {
+                                "content": "@variables('Sentinel-data-sources')",
+                                "schema": {
+                                    "properties": {
+                                        "body": {
+                                            "items": {
+                                                "properties": {
+                                                    "kql": {
+                                                        "type": "string"
+                                                    },
+                                                    "name": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "required": [
+                                                    "name",
+                                                    "kql"
+                                                ],
+                                                "type": "object"
+                                            },
+                                            "type": "array"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "outputs": {}
+                },
+                "parameters": {
+                    "$connections": {
+                        "value": {
+                            "azuremonitorlogs": {
+                                "connectionId": "[parameters('connections_azuremonitorlogs_3_externalid')]",
+                                "connectionName": "azuremonitorlogs-3",
+                                "connectionProperties": {
+                                    "authentication": {
+                                        "identity": "[parameters('userAssignedIdentities_journey3_PolicyAssignmentMI_externalid')]",
+                                        "type": "ManagedServiceIdentity"
+                                    }
+                                },
+                                "id": "/subscriptions/318b3c21-43a9-4b05-8ed3-cd184009466e/providers/Microsoft.Web/locations/eastus/managedApis/azuremonitorlogs"
+                            },
+                            "azuresentinel_1": {
+                                "connectionId": "[parameters('connections_azuresentinel_4_externalid')]",
+                                "connectionName": "azuresentinel-4",
+                                "connectionProperties": {
+                                    "authentication": {
+                                        "identity": "[parameters('userAssignedIdentities_journey3_PolicyAssignmentMI_externalid')]",
+                                        "type": "ManagedServiceIdentity"
+                                    }
+                                },
+                                "id": "/subscriptions/318b3c21-43a9-4b05-8ed3-cd184009466e/providers/Microsoft.Web/locations/eastus/managedApis/azuresentinel"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    ]
+}
