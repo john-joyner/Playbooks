@@ -199,10 +199,10 @@
                                         "method": "post",
                                         "path": "/queryDataV2",
                                         "queries": {
-                                            "resourcegroups": "@parameters('SentinelWSResourceGroup')",
-                                            "resourcename": "@parameters('SentinelWSName')",
+                                            "resourcegroups": "[parameters('SentinelWSResourceGroup')]",
+                                            "resourcename": "[parameters('SentinelWSName')]",
                                             "resourcetype": "Log Analytics Workspace",
-                                            "subscriptions": "@parameters('SentinelSubID')"
+                                            "subscriptions": "[parameters('SentinelSubID')]"
                                         }
                                     }
                                 },
