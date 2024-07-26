@@ -6,6 +6,10 @@
             "defaultValue": "Create-incident-on-missing-Data-Source",
             "type": "String"
         },
+            "SentinelSubID": {
+            "type": "String",
+            "defaultValue": "00000000-0000-0000-0000-000000000000"
+        },
             "SentinelWSResourceGroup": {
             "type": "String",
             "defaultValue": "<Sentinel Resource Group Name>"
@@ -116,7 +120,7 @@
                                             }
                                         },
                                         "method": "put",
-                                        "path": "concat('Incidents/subscriptions/', subscription().subscriptionId, '/resourceGroups/@{encodeURIComponent(parameters('SentinelWSResourceGroup'))}/workspaces/@{encodeURIComponent(parameters('SentinelWSName'))}"
+                                        "path": "/Incidents/subscriptions/@{encodeURIComponent(parameters('SentinelSubID'))}/resourceGroups/@{encodeURIComponent(parameters('SentinelWSResourceGroup'))}/workspaces/@{encodeURIComponent(parameters('SentinelWSName'))}"
                                     }
                                 }
                             },
@@ -195,7 +199,7 @@
                                             "resourcegroups": "[parameters('SentinelWSResourceGroup')]",
                                             "resourcename": "[parameters('SentinelWSName')]",
                                             "resourcetype": "Log Analytics Workspace",
-                                            "subscriptions": "[subscription().subscriptionId]"
+                                            "subscriptions": "[parameters('SentinelSubID')]"
                                         }
                                     }
                                 },
