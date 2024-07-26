@@ -25,6 +25,16 @@
     },
     "resources": [
         {
+        "apiVersion": "2016-06-01",
+        "type": "Microsoft.logic/workflows",
+        "name": "[parameters('PlaybookName')]",
+        "location": "[resourceGroup().location]",
+         "identity": {
+         "type": "SystemAssigned"
+           },
+           "properties": {}
+           },
+        {
         "type": "Microsoft.Web/connections",
         "apiVersion": "2016-06-01",
         "name": "[variables('sentinelConnectionName')]",
