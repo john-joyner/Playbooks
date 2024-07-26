@@ -6,9 +6,9 @@
             "defaultValue": "Create-incident-on-missing-Data-Source",
             "type": "String"
         },
-            "UserName": {
-            "defaultValue": "<username>@<domain>",
-            "type": "string"
+            "SentinelSubID": {
+            "type": "String",
+            "defaultValue": "[subscription().subscriptionId]"
         },
             "SentinelWSResourceGroup": {
             "type": "String",
@@ -30,7 +30,7 @@
         "name": "[variables('sentinelConnectionName')]",
         "location": "[resourceGroup().location]",
         "properties": {
-          "displayName": "[parameters('UserName')]",
+          "displayName": "[parameters('PlaybookName')]",
           "customParameterValues": {},
           "api": {
             "id": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Web/locations/', resourceGroup().location, '/managedApis/azuresentinel')]"
@@ -43,7 +43,7 @@
             "name": "[variables('azuremonitorlogsConnectionName')]",
             "location": "[resourceGroup().location]",
             "properties": {
-                "displayName": "[parameters('UserName')]",
+                "displayName": "[parameters('PlaybookName')]",
                 "customParameterValues": {},
                 "api": {
                     "id": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Web/locations/', resourceGroup().location, '/managedApis/azuremonitorlogs')]"
@@ -199,7 +199,7 @@
                                             "resourcegroups": "[parameters('SentinelWSResourceGroup')]",
                                             "resourcename": "[parameters('SentinelWSName')]",
                                             "resourcetype": "Log Analytics Workspace",
-                                            "subscriptions": "[subscription().subscriptionId]"
+                                            "subscriptions": "[parameters('SentinelSubID')]"
                                         }
                                     }
                                 },
