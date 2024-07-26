@@ -3,20 +3,32 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
             "PlaybookName": {
-            "defaultValue": "Create-incident-on-missing-Data-Source",
-            "type": "String"
-        },
+                "type": "String",
+                "defaultValue": "Create-incident-on-missing-Data-Source",
+                "metadata": {
+                    "description": "The name of the logic app to create."
+                }
+            },
             "SentinelSubID": {
-            "type": "String",
-            "defaultValue": "00000000-0000-0000-0000-000000000000"
-        },
+                "type": "String",
+                "defaultValue": "00000000-0000-0000-0000-000000000000",
+                "metadata": {
+                    "description": "The ID of the Azure subscription."
+                }
+            },
             "SentinelWSResourceGroup": {
-            "type": "String",
-            "defaultValue": "<Sentinel Resource Group Name>"
-        },
+                "type": "String",
+                "defaultValue": "<Sentinel Resource Group Name>",
+                "metadata": {
+                    "description": "The resource group where Microsoft Sentinel is located."
+                }               
+             },
             "SentinelWSName": {
-            "defaultValue": "<Sentinel Workspace Name>",
-            "type": "String"
+                "type": "String",
+                "defaultValue": "<Sentinel Workspace Name>",
+                "metadata": {
+                    "description": "The name of the Microsoft Sentinel workspace."
+                }   
         }
     },
     "variables": {
@@ -74,7 +86,19 @@
                         "$connections": {
                             "defaultValue": {},
                             "type": "Object"
-                        }                        
+                            },
+                        "SentinelSubID": {
+                            "type": "String",
+                            "defaultValue": "[parameters('SentinelSubID')]"
+                            },
+                         "SentinelWSResourceGroup": {
+                             "type": "String",
+                             "defaultValue": "[parameters('SentinelWSResourceGroup')]"             
+                           },
+                          "SentinelWSName": {
+                             "type": "String",
+                             "defaultValue": "[parameters('SentinelWSName')]"
+                           }               
                     },
                     "triggers": {
                         "Recurrence_-_Run_Daily": {
