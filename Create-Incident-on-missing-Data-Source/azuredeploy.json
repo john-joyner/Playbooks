@@ -12,12 +12,7 @@
         },
             "SentinelWSResourceGroup": {
             "type": "String",
-            "metadata": {
-            "description": "Select a resource group."
-            },
-          "allowedValues": [
-            "[resourceGroup().name]"
-           ]
+            "defaultValue": "<Sentinel Resource Group Name>"
         },
             "SentinelWSName": {
             "defaultValue": "<Sentinel Workspace Name>",
