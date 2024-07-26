@@ -14,10 +14,6 @@
             "defaultValue": "<Sentinel Workspace Resource Group>",
             "type": "String"
         },
-            "SentinelSubID": {
-            "defaultValue": "00000000-0000-0000-0000-000000000000",
-            "type": "String"
-        },
             "SentinelWSName": {
             "defaultValue": "<Sentinel Workspace Name>",
             "type": "String"
@@ -202,7 +198,7 @@
                                             "resourcegroups": "[parameters('SentinelWSResourceGroup')]",
                                             "resourcename": "[parameters('SentinelWSName')]",
                                             "resourcetype": "Log Analytics Workspace",
-                                            "subscriptions": "[parameters('SentinelSubID')]"
+                                            "subscriptions": "[subscription().subscriptionId]"
                                         }
                                     }
                                 },
