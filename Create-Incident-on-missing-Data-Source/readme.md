@@ -11,6 +11,10 @@ This solution will create a Microsoft Sentinel incident when one or more data so
      <img src="https://aka.ms/deploytoazurebutton"/>
 </a>
 
+<a href="https://portal.azure.us/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FAzure%2FAzure-Sentinel%2Fmaster%2FPlaybooks%2FCreate-Incident-on-missing-Data-Source%2Fazuredeploy.json target="_blank">
+<img src="https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazuregov.png"/>
+</a>
+
 ### IMPORTANT POST DEPLOYMENT STEPS
 
 1. The "<b>Initialize variable - Sentinel Data Sources</b>" step of the Logic App must be customized with the data sources expected in the environment (details provided below in this README).
