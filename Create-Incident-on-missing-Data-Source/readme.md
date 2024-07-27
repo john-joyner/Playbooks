@@ -7,12 +7,12 @@ This solution will create a Microsoft Sentinel incident when one or more data so
 
 ### Click to Deploy to Azure
 
-<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fjohn-joyner%2FPlaybooks%2Fmain%2FCreate-Incident-on-missing-Data-Source%2Fazuredeploy.json" target="_blank">
-     <img src="https://aka.ms/deploytoazurebutton"/>
+<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FAzure%2FAzure-Sentinel%2Fmaster%2FPlaybooks%2FCreate-Incident-on-missing-Data-Source%2Fazuredeploy.json" target="_blank">
+    <img src="https://aka.ms/deploytoazurebutton"/>
 </a>
 
 <a href="https://portal.azure.us/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FAzure%2FAzure-Sentinel%2Fmaster%2FPlaybooks%2FCreate-Incident-on-missing-Data-Source%2Fazuredeploy.json" target="_blank">
-     <img src="https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazuregov.png"/>
+<img src="https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazuregov.png"/>
 </a>
 
 ### IMPORTANT POST DEPLOYMENT STEPS
@@ -31,9 +31,14 @@ The Logic App loops through each data source (specified in the first 'Initialize
 
 ![1-Recurrence](../Create-Incident-on-missing-Data-Source/images/1-Recurrence.png)
 
-### Since the Logic App is being deployed from an ARM template you will need to make connections to Log Analytics and Microsoft Sentinel before the Logic App can work in your environment. You can expect to see windows like the one below. Click “Add new” to create a connection for each of the three resources. 
+### Since the Logic App is being deployed from an ARM template you will need to make connections to Log Analytics and Microsoft Sentinel before the Logic App can work in your environment. 
 
- ![2-Connections](../Create-Incident-on-missing-Data-Source/images/2-Connections.png)
+1. Before using the Logic App for the first time, navigate to the Logic App -> Development Tools -> API connections menu.
+2. Select each of the two (2) API connections, and for both connections press the Authorize button, authenticate with your user account, and push the Save button. 
+
+ ![2-Authorize-API-Connections](../Create-Incident-on-missing-Data-Source/images/2-Authorize-API-Connections.png)
+
+Tip: After verifying the Logic App in your environment, you can swap out the user-based API connections with a system-assigned or user-assigned managed identity. Assign RBAC '<b>Log Analytics Reader</b>' and '<b>Microsoft Sentinel Contributor</b>' roles to the Logic App managed system identity at the Management Group, Subscription, Resource Group, or Log Analytics Workspace level.
 
 ### The "Initialize variable - Sentinel Data Sources" task in the Logic App must be customized for your environment.
 
@@ -64,7 +69,4 @@ Remember that each array needs a comma after the closing curly bracket, except f
 
 ### Below is an example Microsoft Sentinel incident created by the Logic App:
 
-   ![7-SampleIncident](../Create-Incident-on-missing-Data-Source/images/7-SampleIncident.png)
-
-
-
+   ![4-SampleIncident](../Create-Incident-on-missing-Data-Source/images/4-SampleIncident.png)
