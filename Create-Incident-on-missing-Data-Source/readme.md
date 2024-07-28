@@ -11,7 +11,7 @@ This solution will create a Microsoft Sentinel incident when one or more data so
     <img src="https://aka.ms/deploytoazurebutton"/>
 </a>
 
-<a href="https://portal.azure.us/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fjohn-joyner%2FPlaybooks%2Fmain%2FCreate-Incident-on-missing-Data-Source%2Fazuredeploy.json" target="_blank">" target="_blank">
+<a href="https://portal.azure.us/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fjohn-joyner%2FPlaybooks%2Fmain%2FCreate-Incident-on-missing-Data-Source%2Fazuredeploy.json" target="_blank">
 <img src="https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazuregov.png"/>
 </a>
 
