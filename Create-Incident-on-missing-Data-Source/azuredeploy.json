@@ -6,28 +6,28 @@
                 "type": "String",
                 "defaultValue": "Create-incident-on-missing-Data-Source",
                 "metadata": {
-                    "description": "Default value = Create-incident-on-missing-Data-Source = The name of the logic app to create"
+                    "description": "The name of the logic app to create."
                 }
             },
             "SentinelSubID": {
                 "type": "String",
                 "defaultValue": "[subscription().subscriptionId]",
                 "metadata": {
-                    "description": "Default value = subscription().subscriptionId = the ID of the selected Azure subscription"
+                    "description": "The ID of the Azure subscription."
                 }
             },
             "SentinelWSResourceGroup": {
                 "type": "String",
                 "defaultValue": "<Sentinel Resource Group Name>",
                 "metadata": {
-                    "description": "The resource group where Microsoft Sentinel is located (must be changed)"
+                    "description": "The resource group where Microsoft Sentinel is located."
                 }               
              },
             "SentinelWSName": {
                 "type": "String",
                 "defaultValue": "<Sentinel Workspace Name>",
                 "metadata": {
-                    "description": "The resource group where Microsoft Sentinel is located (must be changed)"
+                    "description": "The name of the Microsoft Sentinel workspace."
                 }   
         }
     },
@@ -45,7 +45,7 @@
           "displayName": "[parameters('PlaybookName')]",
           "customParameterValues": {},
           "api": {
-            "id": "[concat('/Incidents/subscriptions/', subscription().subscriptionId, '/@{encodeURIComponent(parameters('SentinelWSResourceGroup'))}/workspaces/@{encodeURIComponent(parameters('SentinelWSName'))}']"
+            "id": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Web/locations/', resourceGroup().location, '/managedApis/azuresentinel')]"
           }
         }
       },
@@ -141,7 +141,7 @@
                                             }
                                         },
                                         "method": "put",
-                                        "path": "/Incidents/subscriptions/@{encodeURIComponent(parameters('SentinelSubID'))}/resourceGroups/@{encodeURIComponent(parameters('SentinelWSResourceGroup'))}/workspaces/@{encodeURIComponent(parameters('SentinelWSName'))}"
+                                                  "path": "[concat('/Incidents/subscriptions', subscription().subscriptionId, '/resourceGroups/@{encodeURIComponent(parameters('SentinelWSResourceGroup'))}/workspaces/@{encodeURIComponent(parameters('SentinelWSName'))}')]"
                                     }
                                 }
                             },
