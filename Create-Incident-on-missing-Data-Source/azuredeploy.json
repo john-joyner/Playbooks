@@ -20,14 +20,14 @@
                 "type": "String",
                 "defaultValue": "<Sentinel Resource Group Name>",
                 "metadata": {
-                    "description": "The resource group where Microsoft Sentinel is located."
+                    "description": "The resource group where Microsoft Sentinel is located (must be changed)"
                 }               
              },
             "SentinelWSName": {
                 "type": "String",
                 "defaultValue": "<Sentinel Workspace Name>",
                 "metadata": {
-                    "description": "The name of the Microsoft Sentinel workspace."
+                    "description": "The resource group where Microsoft Sentinel is located (must be changed)"
                 }   
         }
     },
