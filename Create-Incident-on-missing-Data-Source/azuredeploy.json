@@ -77,6 +77,10 @@
                             "defaultValue": {},
                             "type": "Object"
                             },
+                        "SentinelSubID": {
+                            "type": "String",
+                            "defaultValue": "[subscription().subscriptionId]"
+                            },
                          "SentinelWSResourceGroup": {
                              "type": "String",
                              "defaultValue": "[parameters('SentinelWSResourceGroup')]"             
@@ -130,7 +134,7 @@
                                             }
                                         },
                                         "method": "put",
-                                        "path": "/Incidents/subscriptions/subscription().subscriptionId/resourceGroups/@{encodeURIComponent(parameters('SentinelWSResourceGroup'))}/workspaces/@{encodeURIComponent(parameters('SentinelWSName'))}"
+                                        "path": "/Incidents/subscriptions/@{encodeURIComponent(parameters('SentinelSubID'))}/resourceGroups/@{encodeURIComponent(parameters('SentinelWSResourceGroup'))}/workspaces/@{encodeURIComponent(parameters('SentinelWSName'))}"
                                     }
                                 }
                             },
@@ -209,7 +213,7 @@
                                             "resourcegroups": "[parameters('SentinelWSResourceGroup')]",
                                             "resourcename": "[parameters('SentinelWSName')]",
                                             "resourcetype": "Log Analytics Workspace",
-                                            "subscriptions": "[subscription().subscriptionId]"
+                                            "subscriptions": "[parameters('SentinelSubID')]"
                                         }
                                     }
                                 },
