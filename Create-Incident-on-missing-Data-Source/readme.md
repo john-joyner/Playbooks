@@ -1,9 +1,9 @@
 # Create Microsoft Sentinel Incident on Missing Data Source Solution
 Author: John Joyner
 
-Consumption plan Logic App has one (1) trigger and fourteen (14) steps.
-
 This solution will create a Microsoft Sentinel incident when one or more data sources are discovered to have sent no data in the previous 24 hours.
+
+Consumption plan Logic App has one (1) trigger and fourteen (14) steps.
 
 ### Click to Deploy to Azure
 
