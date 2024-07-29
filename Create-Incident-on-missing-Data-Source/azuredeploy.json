@@ -6,28 +6,28 @@
                 "type": "String",
                 "defaultValue": "Create-incident-on-missing-Data-Source",
                 "metadata": {
-                    "description": "The name of the logic app to create."
+                    "description": "The name of the logic app to create (no need to change to accept default)"
                 }
             },
             "SentinelSubID": {
                 "type": "String",
                 "defaultValue": "[subscription().subscriptionId]",
                 "metadata": {
-                    "description": "The ID of the Azure subscription."
+                    "description": "The ID of the selected Azure subscription (no need to change to accept default)"
                 }
             },
             "SentinelWSResourceGroup": {
                 "type": "String",
                 "defaultValue": "<Sentinel Resource Group Name>",
                 "metadata": {
-                    "description": "The resource group where Microsoft Sentinel is located."
+                    "description": "The resource group where Microsoft Sentinel is located (must be specified)"
                 }               
              },
             "SentinelWSName": {
                 "type": "String",
                 "defaultValue": "<Sentinel Workspace Name>",
                 "metadata": {
-                    "description": "The name of the Microsoft Sentinel workspace."
+                    "description": "The name of the Microsoft Sentinel workspace (must be specified)"
                 }   
         }
     },
@@ -141,7 +141,7 @@
                                             }
                                         },
                                         "method": "put",
-                                                  "path": "[concat('/Incidents/subscriptions', subscription().subscriptionId, '/resourceGroups/@{encodeURIComponent(parameters('SentinelWSResourceGroup'))}/workspaces/@{encodeURIComponent(parameters('SentinelWSName'))}')]"
+                                        "path": "/Incidents/subscriptions/@{encodeURIComponent(parameters('SentinelSubID'))}/resourceGroups/@{encodeURIComponent(parameters('SentinelWSResourceGroup'))}/workspaces/@{encodeURIComponent(parameters('SentinelWSName'))}"
                                     }
                                 }
                             },
