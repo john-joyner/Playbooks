@@ -6,14 +6,14 @@
                 "type": "String",
                 "defaultValue": "Create-incident-on-missing-Data-Source",
                 "metadata": {
-                    "description": "The name of the logic app to create."
+                    "description": "Default value = Create-incident-on-missing-Data-Source = The name of the logic app to create"
                 }
             },
             "SentinelSubID": {
                 "type": "String",
                 "defaultValue": "[subscription().subscriptionId]",
                 "metadata": {
-                    "description": "The ID of the Azure subscription."
+                    "description": "Default value = subscription().subscriptionId = the ID of the selected Azure subscription"
                 }
             },
             "SentinelWSResourceGroup": {
