@@ -17,7 +17,7 @@ This solution will create a Microsoft Sentinel incident when one or more data so
 
 ### IMPORTANT POST DEPLOYMENT STEPS
 
-1. The Logic App will initially include API connections authorized by the authenticated user performing the deployment. Each of the two (2) API connections must be individaully authorized (details provided below in this README). <em>The Logic App will fail until this step is performed.</em>
+1. The Logic App will initially include API connections authorized by the authenticated user performing the deployment. Each of the two (2) API connections must be individually authorized (details provided below in this README). <em>The Logic App will fail until this step is performed.</em>
 
 2. The "<b>Initialize variable - Sentinel Data Sources</b>" step of the Logic App must be customized with the data sources expected in the environment (details provided below in this README). <em>Sentinel incidents created by the Logic App will be inaccurate until this step is completed.</em>
 
