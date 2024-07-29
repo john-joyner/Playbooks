@@ -1,6 +1,10 @@
 {
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
+    "metadata":{
+        "comments":"This solution will create a Microsoft Sentinel incident when one or more data sources are discovered to have sent no data in the previous 24 hours.",
+        "author":"John Joyner"
+           },
     "parameters": {
             "PlaybookName": {
                 "type": "String",
