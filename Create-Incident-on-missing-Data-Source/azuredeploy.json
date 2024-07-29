@@ -209,7 +209,7 @@
                                             "resourcegroups": "[parameters('SentinelWSResourceGroup')]",
                                             "resourcename": "[parameters('SentinelWSName')]",
                                             "resourcetype": "Log Analytics Workspace",
-                                            "subscriptions": "subscription().subscriptionId"
+                                            "subscriptions": "[subscription().subscriptionId]"
                                         }
                                     }
                                 },
