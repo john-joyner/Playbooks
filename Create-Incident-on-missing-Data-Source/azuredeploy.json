@@ -207,7 +207,7 @@
                                     "inputs": {
                                         "body": {
                                             "query": "@{items('For_each_-_Loop_through_each_Data_Source')?['kql']} | where TimeGenerated >= ago(1d) | summarize Time = max(TimeGenerated) | where isnotempty(Time)",
-                                            "timerangetype": "Last 1 day"
+                                            "timerangetype": "Set in query"
                                         },
                                         "host": {
                                             "connection": {
