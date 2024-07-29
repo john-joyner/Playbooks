@@ -86,7 +86,7 @@
                             },
                         "SentinelSubID": {
                             "type": "String",
-                            "defaultValue": "[subscription().subscriptionId]"
+                            "defaultValue": "[parameters('SentinelSubID')]"
                             },
                          "SentinelWSResourceGroup": {
                              "type": "String",
