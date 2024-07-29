@@ -130,7 +130,7 @@
                                     "type": "ApiConnection",
                                     "inputs": {
                                         "body": {
-                                            "description": "List of stopped data source(s):\n@{body('Create_HTML_table_-_Formatted_list_of_stopped_Data_Sources')}\nThe listed data source(s) stopped sending data in the last 24 hours, although some connected data sources may just not have had any data to send in this 24 hour window. If appropriate, investigate and work to restore data connection. If a data connector is no longer active, modify the \"Initialize variable - Sentinel Data Sources\" task in the \"Check-for-stopped-Sentinel-data-sources\" playbook (Logic app) to remove the inactive data source.\n",
+                                            "description": "List of stopped data source(s):\n@{body('Create_HTML_table_-_Formatted_list_of_stopped_Data_Sources')}\nThe listed data source(s) stopped sending data in the last 24 hours, although some connected data sources may just not have had any data to send in this 24 hour window. If appropriate, investigate and work to restore data connection. If a data connector is no longer active, modify the \"Initialize variable - Sentinel Data Sources\" task in the \"Create-Incident-on-missing-Data-Source\" playbook (Logic app) to remove the inactive data source.\n",
                                             "severity": "Low",
                                             "status": "New",
                                             "title": "One or more Microsoft Sentinel data sources stopped sending data"
