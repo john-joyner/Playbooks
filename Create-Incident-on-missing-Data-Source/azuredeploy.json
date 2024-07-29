@@ -45,7 +45,7 @@
           "displayName": "[parameters('PlaybookName')]",
           "customParameterValues": {},
           "api": {
-            "id": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Web/locations/', resourceGroup().location, '/managedApis/azuresentinel')]"
+            "id": "[concat('/Incidents/subscriptions/', subscription().subscriptionId, '/@{encodeURIComponent(parameters('SentinelWSResourceGroup'))}/workspaces/@{encodeURIComponent(parameters('SentinelWSName'))}']"
           }
         }
       },
