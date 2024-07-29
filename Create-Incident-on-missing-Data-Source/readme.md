@@ -42,7 +42,8 @@ Tip: After verifying the Logic App in your environment, you can swap out the use
 
 ### The "Initialize variable - Sentinel Data Sources" task in the Logic App must be customized for your environment.
 
-The variable is pre-populated with a number of data sources to get you started. Delete the data sources you don't have in your environment and add those not already in the list.
+The variable is pre-populated with a number of data sources to get you started. Delete the data sources you don't have in your environment and add those not already in the list. You should include all the data sources in your Microsoft Sentinel -> Configuration -> Data Connectors list as well as Azure Monitor -> Settings -> Data Collection Rules.
+
 
 Each data source is specified as an array with two "attribute : value" pairs like this:
 
