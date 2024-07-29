@@ -9,13 +9,6 @@
                     "description": "The name of the logic app to create."
                 }
             },
-            "SentinelSubID": {
-                "type": "String",
-                "defaultValue": "00000000-0000-0000-0000-000000000000",
-                "metadata": {
-                    "description": "The ID of the Azure subscription."
-                }
-            },
             "SentinelWSResourceGroup": {
                 "type": "String",
                 "defaultValue": "<Sentinel Resource Group Name>",
@@ -84,10 +77,6 @@
                             "defaultValue": {},
                             "type": "Object"
                             },
-                        "SentinelSubID": {
-                            "type": "String",
-                            "defaultValue": "[parameters('SentinelSubID')]"
-                            },
                          "SentinelWSResourceGroup": {
                              "type": "String",
                              "defaultValue": "[parameters('SentinelWSResourceGroup')]"             
@@ -141,7 +130,7 @@
                                             }
                                         },
                                         "method": "put",
-                                        "path": "/Incidents/subscriptions/@{encodeURIComponent(parameters('SentinelSubID'))}/resourceGroups/@{encodeURIComponent(parameters('SentinelWSResourceGroup'))}/workspaces/@{encodeURIComponent(parameters('SentinelWSName'))}"
+                                        "path": "/Incidents/subscriptions/subscription().subscriptionId/resourceGroups/@{encodeURIComponent(parameters('SentinelWSResourceGroup'))}/workspaces/@{encodeURIComponent(parameters('SentinelWSName'))}"
                                     }
                                 }
                             },
@@ -220,7 +209,7 @@
                                             "resourcegroups": "[parameters('SentinelWSResourceGroup')]",
                                             "resourcename": "[parameters('SentinelWSName')]",
                                             "resourcetype": "Log Analytics Workspace",
-                                            "subscriptions": "[parameters('SentinelSubID')]"
+                                            "subscriptions": "subscription().subscriptionId"
                                         }
                                     }
                                 },
