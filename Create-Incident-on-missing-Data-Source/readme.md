@@ -38,7 +38,7 @@ The Logic App loops through each data source (specified in the first 'Initialize
 
  ![2-Authorize-API-Connections](../Create-Incident-on-missing-Data-Source/images/2-Authorize-API-Connections.png)
 
-Tip: After verifying the Logic App in your environment, you can swap out the user-based API connections with a system-assigned or user-assigned managed identity. Assign RBAC '<b>Log Analytics Reader</b>' and '<b>Microsoft Sentinel Contributor</b>' roles to the Logic App managed system identity at the Management Group, Subscription, Resource Group, or Log Analytics Workspace level.
+Tip: After verifying the Logic App in your environment, you can swap out the user-based API connections with a service principal or a system-assigned or user-assigned managed identity. Assign RBAC '<b>Log Analytics Reader</b>' and '<b>Microsoft Sentinel Contributor</b>' roles to the service principal or Logic App managed system identity at the Management Group, Subscription, or Resource Group level.
 
 ### The "Initialize variable - Sentinel Data Sources" task in the Logic App must be customized for your environment.
 
